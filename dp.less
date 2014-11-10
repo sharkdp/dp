@@ -13,9 +13,7 @@
 @topMargin: 50px;
 @boxWidth: 700px;
 
-@pad: 15px;
-
-@fontSize: 14pt;
+@fontSize: 20px;
 
 #wrapper {
     width: 100%;
@@ -34,7 +32,6 @@
     width: @contentWidth;
     max-width: 80%;
     padding-bottom: 40px;
-    font-size: @fontSize;
 }
 
 html, body {
@@ -54,12 +51,12 @@ html, body {
 .textFont {
     font-family: 'Lustria', serif;
     line-height: 140%;
-    font-size: 24px;
+    font-size: @fontSize;
 }
 
 .box {
     margin: 0 auto;
-    margin-bottom: 400px;
+    margin-bottom: 180px;
     padding: 0;
     width: @boxWidth;
     height: 100%;
@@ -69,9 +66,13 @@ html, body {
     .pad(@width) { padding-left: unit(@width, px); }
 
     h1 {
-        .pad(10);
+        .pad(6);
         .headerFont;
         font-size: 60px;
+    }
+
+    h1::before {
+        content: "≫ ";
     }
 
     h2 {
@@ -82,8 +83,8 @@ html, body {
         a {
             color: @hl;
             text-decoration: none;
-            font-size: 30px;
-            margin-left: 10px;
+            font-size: 25px;
+            margin-left: 15px;
         }
     }
 
@@ -94,8 +95,17 @@ html, body {
     }
 
     p {
-        .pad(16);
+        .pad(10);
         .textFont;
+
+        a {
+            color: @dk;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: @hl;
+        }
     }
 }
 
@@ -104,10 +114,11 @@ html, body {
     bottom: 0px;
     z-index: 99;
     left: 0px;
-    height: 220px;
+    height: 100px;
     width: 100%;
     background-color: @dk;
     overflow: visible;
+    border-top: rgba(1, 1, 1, 0.5);
 }
 
 #waves {
@@ -117,7 +128,7 @@ html, body {
     background-repeat: repeat-x;
     background-position: center top;
     position: absolute;
-    bottom: 145px;
+    bottom: 100px;
     left: 0px;
     z-index: 1;
 }
@@ -126,8 +137,8 @@ html, body {
     margin: unit(@y, px) unit(@x, px);
 }
 
-#shark-1 { .shark(190, 70) }
-#shark-2 { .shark(240, 00) }
-#shark-3 { .shark(040, 30) }
-#shark-4 { .shark(140, 80) }
+// #shark-1 { .shark(190, 70) }
+// #shark-2 { .shark(240, 00) }
+#shark-3 { .shark(040, 50) }
+#shark-4 { .shark(140, 100) }
 #shark-5 { .shark(090, 20) }
