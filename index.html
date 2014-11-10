@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
         <title>David Peter</title>
@@ -11,20 +11,19 @@
     </head>
     <body>
         <div id="wrapper">
-            <div id="content">
-                <div class="box">
+            <div id="content" class="hyphenate">
                     <h1>me</h1>
-                    <p>My name is David and I am a physicist living in Stuttgart, Germany. I am passionate about science, math, programming, technology, cycling, progressive rock and board games. You can find information about some of my projects on this site.</p>
+                    <p>My name is David and I am a physicist living in Stuttgart, Germany. I am passionate about science, math, programming, technology, cycling, progressive rock music and board games. You can find information about some of my projects on this site.</p>
                     <!-- <h2>contact </h2> -->
                     <p>
-                    Contact me via email under <a href="mailto:mail@david-peter.de">mail@david-peter.de</a>. The work-related information is located on my <a href="http://www.itp3.uni-stuttgart.de/institut/mitarbeiter/buechlerAG/peter">institute website</a>. You can find some of my open source projects on my github profile at <a href="https://github.com/sharkdp">github.com/shark.dp</a>. Also, go and spy on my taste of music at <a href="http://www.lastfm.com/user/sharkdp">lastfm.com/user/sharkdp</a>.
+                    Contact me via email at <a href="mailto:mail@david-peter.de">mail@david-peter.de</a>. Work-related information is located on my <a href="http://www.itp3.uni-stuttgart.de/institut/mitarbeiter/buechlerAG/peter">institute website</a>. You can find some of my open source projects on <a href="https://github.com/sharkdp">github.com</a>. Also, go and spy on my taste of music at <a href="http://www.lastfm.com/user/sharkdp">lastfm.com</a>.
                     </p>
 
 
                     <h1>projects</h1>
                     <h2>Yinsh <a href="http://david-peter.de/yinsh/">/yinsh</a></h2>
                     <p>
-                    <img src="graphics/yinsh.svg">
+                    <img src="graphics/yinsh.svg" alt="Yinsh board game">
                     This is an online version of the abstract board game Yinsh.
                     It is written in Haskell and compiled to JavaScript by the Haste compiler.
                     The rules of the game can be found <a href=".">here</a>. The game has
@@ -35,7 +34,6 @@
                     <h2>Paper locator <a href="http://paperlocator.com">paperlocator.com</a></h2>
                     <p>
                     Paper locator is an easy and universal interface to get immediate access to scientific papers.
-
                     Tired of manually extracting journal, volume and page from a reference and searching the publisher websites manually? Paper locator automates this process. Just copy a text sample containing the reference and select if you want to see the abstract or the document directly.
                     </p>
 
@@ -46,43 +44,53 @@
                     </p>
 
                     <h2>Zehntausend <a href=".pdf">zehntausend.pdf</a></h2>
-                    <p>Das Würfelspiel Zehntausend lässt sich mathematisch exakt lösen. Die detaillierte Rechnung sowie das verwendete Programm in Haskell.</p>
+                    <p lang="de">
+                    <img src="graphics/zehntausend.svg" alt="Erwartungswert Formel">
+                    Das Würfelspiel <em>Zehntausend</em> lässt sich mathematisch exakt lösen indem man die optimale Strategie rekursiv definiert. Die detaillierte Rechnung findet sich im angegebenen Dokument. Ein Haskell Programm, das die optimale Strategie implementiert und zur Lösung verwendet wurde befindet sich auf <a href=".">github</a>.
+                    </p>
 
                     <h2>gnuplot-mm <a href="https://github.com/sharkdp/gnuplot-mm">@sharkdp/gnuplot-mm</a></h2>
                     <p>
-                    This package provides GnuPlot bindings for Mathematica. It provides the functions gnuPlot and gnuListPlot which work (to some extend) analogous to Mathematics own Plot and ListPlot functions.
+                    This is a Mathematica package that defines bindings for GnuPlot.
+                    It can be used to create high-quality plots from withing Mathematica.
+                    The package easily integrates into your automated workflow by exporting to different output
+                    formats.
+                    It provides two functions <code>gnuPlot</code> and <code>gnuListPlot</code> which work (to some extend) analogous to Mathematicas own <code>Plot</code> and <code>ListPlot</code> functions.
                     </p>
 
                     <h1>fun</h1>
                     <h2>Board games</h2>
-                    <p>My collection of board games can be found at <a href=".">boardgamegeek.com</a></p>
+                    <p>
+                    I enjoy abstract, social and strategic board games as well as card games. My collection of games can be found at <a href=".">boardgamegeek.com</a>.
+                    </p>
 
-                    <h2>Trails <a href="/trails">/trails</a></h2>
-                    <p>A few hand-selected singletrails close to Stuttgart Vaihingen.</p>
+                    <h2>Mountainbiking <a href="/trails">/trails</a>, <a href="/alpencross2014">/alpencross2014</a></h2>
+                    <p>
+                    A few &ldquo;hand-selected&rdquo; singletrails close to Stuttgart Vaihingen.
+                    A twelve minute movie of our 456km mountain bike tour from Füssen, Germany to Riva del Garda, Italy.
+                    </p>
 
-                    <h2>Across the alps <a href="/alpencross2014">/alpencross2014</a></h2>
-                    <p>A twelve minute movie of our 456km mountain bike tour from Füssen, Germany to Riva del Garda, Italy.</p>
-
-                </div>
             </div>
         </div>
 
         <div id="pool">
-            <div id="waves" />
-            <ul id="scene"
-                data-invert-x="true"
-                data-invert-y="true"
-                data-scalar-x="4"
-                data-scalar-y="20"
-                data-friction-y="0.3"
-                >
-                <li class="layer" data-depth="0.20"><img id="shark-5" src="graphics/shark-5.png"></li>
-                <li class="layer" data-depth="0.40"><img id="shark-4" src="graphics/shark-4.png"></li>
-                <li class="layer" data-depth="0.60"><img id="shark-3" src="graphics/shark-3.png"></li>
-                <!-- <li class="layer" data-depth="0.80"><img id="shark-2" src="graphics/shark-2.png"></li> -->
-                <!-- <li class="layer" data-depth="1.00"><img id="shark-1" src="graphics/shark-1.png"></li> -->
-            </ul>
+            <div id="waves">
+                <ul id="scene"
+                    data-invert-x="true"
+                    data-invert-y="true"
+                    data-scalar-x="4"
+                    data-scalar-y="20"
+                    data-friction-y="0.3"
+                    >
+                    <li class="layer" data-depth="0.20"><img id="shark-5" alt="shark" src="graphics/shark-5.png"></li>
+                    <li class="layer" data-depth="0.40"><img id="shark-4" alt="shark" src="graphics/shark-4.png"></li>
+                    <li class="layer" data-depth="0.60"><img id="shark-3" alt="shark" src="graphics/shark-3.png"></li>
+                    <!-- <li class="layer" data-depth="0.80"><img id="shark-2" src="graphics/shark-2.png"></li> -->
+                    <!-- <li class="layer" data-depth="1.00"><img id="shark-1" src="graphics/shark-1.png"></li> -->
+                </ul>
+            </div>
         </div>
         <script type="text/javascript" src="parallax/deploy/parallax.js"></script>
+        <script type="text/javascript" src="hyphenate.js"></script>
     </body>
 </html>

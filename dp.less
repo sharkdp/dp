@@ -10,10 +10,13 @@
 
 // Sizes
 @contentWidth: 750px;
-@topMargin: 50px;
-@boxWidth: 700px;
+@marginTop:    50px;
+@marginLeft:   @marginTop;
 
-@fontSize: 20px;
+// Fonts
+@font:       'Lustria', serif;
+@fontSize:   20px;
+@headerFont: 'Lato', sans;
 
 #wrapper {
     width: 100%;
@@ -26,12 +29,13 @@
 }
 
 #content {
-    margin: 0 auto;
-    margin-top: @topMargin;
+    margin-top: @marginTop;
+    margin-left: @marginLeft;
     padding: 0;
+
     width: @contentWidth;
+    min-width: 0.5 * @contentWidth;
     max-width: 80%;
-    padding-bottom: 40px;
 }
 
 html, body {
@@ -43,73 +47,91 @@ html, body {
 }
 
 .headerFont {
-    font-family: 'Lato', sans;
+    font-family: @headerFont;
     font-weight: 700;
     color: @dk;
+
+    // Enable Kerning
+    text-rendering: optimizeLegibility;
 }
 
 .textFont {
-    font-family: 'Lustria', serif;
+    font-family: @font;
     line-height: 140%;
     font-size: @fontSize;
+
+    // text-align: justify;
+
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
 }
 
-.box {
-    margin: 0 auto;
-    margin-bottom: 180px;
-    padding: 0;
-    width: @boxWidth;
-    height: 100%;
-    // background: @lt;
-    overflow: visible;
 
-    .pad(@width) { padding-left: unit(@width, px); }
+.pad(@width) {
+    padding-left: unit(@width, px);
+}
 
-    h1 {
-        .pad(6);
-        .headerFont;
-        font-size: 60px;
+h1 {
+    .pad(6);
+    .headerFont;
+    font-size: 60px;
+}
+
+h1::before {
+    content: "≫ ";
+    color: @ct;
+}
+
+h2 {
+    .pad(10);
+    .headerFont;
+    font-size: 40px;
+    margin-bottom: 0;
+
+    a {
+        color: @hl;
+        text-decoration: none;
+        font-size: 25px;
+        margin-left: 15px;
+    }
+}
+
+h3 {
+    .pad(10);
+    .headerFont;
+    font-size: 30px;
+}
+
+p {
+    .pad(10);
+    .textFont;
+    margin-bottom: 40px;
+
+    a {
+        color: @dk;
+        text-decoration: none;
     }
 
-    h1::before {
-        content: "≫ ";
+    a:hover {
+        color: @hl;
     }
 
-    h2 {
-        .pad(10);
-        .headerFont;
-        font-size: 40px;
-
-        a {
-            color: @hl;
-            text-decoration: none;
-            font-size: 25px;
-            margin-left: 15px;
-        }
+    img {
+        float: right;
+        margin-left: 20px;
+        margin-bottom: 20px;
     }
+}
 
-    h3 {
-        .pad(10);
-        .headerFont;
-        font-size: 30px;
-    }
-
-    p {
-        .pad(10);
-        .textFont;
-
-        a {
-            color: @dk;
-            text-decoration: none;
-        }
-
-        a:hover {
-            color: @hl;
-        }
-    }
+code {
+    // TODO
 }
 
 #pool {
+    display: none;
+
     position: fixed;
     bottom: 0px;
     z-index: 99;
