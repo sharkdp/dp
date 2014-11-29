@@ -11,12 +11,26 @@
 // Sizes
 @contentWidth: 750px;
 @marginTop:    50px;
-@marginLeft:   100px;
+@marginSide:   100px;
 
-// Fonts
+// Fonts and Text
 @font:       'Lustria', serif;
-@fontSize:   20px;
 @headerFont: 'Lato', sans;
+
+@fontSize:      19px;
+@fontSizeH1:    55px;
+@fontSizeH2:    35px;
+@parSep:        40px;
+
+@linkSizeFactor: 0.8;
+
+// Sizes for small devices
+@smallMarginTop:     25px;
+@smallMarginSide:    25px;
+@smallFontSize:      17px;
+@smallFontSizeH1:    40px;
+@smallFontSizeH2:    25px;
+@smallParSep:        20px;
 
 #wrapper {
     width: 100%;
@@ -29,13 +43,13 @@
 }
 
 #content {
-    margin-top: @marginTop;
-    margin-left: @marginLeft;
-    padding: 0;
+    max-width: @contentWidth;
 
-    width: @contentWidth;
-    min-width: 0.5 * @contentWidth;
-    max-width: 85%; // TODO!
+    margin-top: @marginTop;
+    margin-bottom: @marginTop;
+    margin-left: @marginSide;
+    margin-right: @marginSide;
+    padding: 0;
 }
 
 html, body {
@@ -50,9 +64,6 @@ html, body {
     font-family: @headerFont;
     font-weight: 700;
     color: @dk;
-
-    // Enable Kerning
-    text-rendering: optimizeLegibility;
 }
 
 .textFont {
@@ -74,51 +85,103 @@ html, body {
 h1 {
     .pad(6);
     .headerFont;
-    font-size: 60px;
+    font-size: @fontSizeH1;
 }
 
 h1::before {
-    content: "≫ ";
-    color: @ct;
+    content: "↬ ";
+    color: @hll;
 }
 
 h2 {
+    display: inline-block;
     .pad(10);
     .headerFont;
-    font-size: 40px;
+    font-size: @fontSizeH2;
+    margin-top: 0;
     margin-bottom: 0;
-
-    a {
-        color: @hl;
-        text-decoration: none;
-        font-size: 25px;
-        margin-left: 15px;
-    }
 }
 
-h3 {
-    .pad(10);
-    .headerFont;
-    font-size: 30px;
+div.links {
+    display: inline;
+    padding-left: 0.7em;
+    font-size: @linkSizeFactor * @fontSizeH2;
+
+    a {
+        .headerFont;
+        color: @hl;
+        text-decoration: none;
+    }
 }
 
 p {
     .pad(10);
     .textFont;
-    margin-bottom: 40px;
+    margin-bottom: @parSep;
 
     a {
         color: @dk;
         text-decoration: none;
     }
 
+    a::before {
+        content: "⇢";
+        color: @dk;
+        padding-right: 2px;
+    }
+
     a:hover {
         color: @hl;
+    }
+
+    a:hover::before {
+        color: black;
     }
 
     img {
         float: right;
         margin-left: 20px;
         margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: (@contentWidth + 2 * @marginSide)) {
+    p > img {
+        display: none;
+    }
+
+    #content {
+        width: 90%;
+        margin: auto;
+        margin-top: @smallMarginTop;
+    }
+
+    h1 {
+        font-size: @smallFontSizeH1;
+    }
+
+    h2 {
+        font-size: @smallFontSizeH2;
+    }
+
+    .textFont {
+        font-size: @smallFontSize;
+    }
+
+    p {
+        .textFont;
+        margin-bottom: @smallParSep;
+    }
+
+    div.links {
+        font-size: @linkSizeFactor * @smallFontSizeH2;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    div.links {
+        margin-top: 0.25 * @smallParSep;
+        .pad(10);
+        display: block;
     }
 }
