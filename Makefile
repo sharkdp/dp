@@ -1,6 +1,6 @@
-dp.css: dp.less
-	lessc --verbose dp.less dp.css
-#lessc --yui-compress --verbose dp.less dp.css
+css/main.css: css/main.less
+	# lessc --verbose css/main.less css/main.css
+	lessc --verbose --compress css/main.less css/main.css
 
 clean:
-	rm dp.css
+	rm -f css/main.css
