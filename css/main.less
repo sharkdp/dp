@@ -102,15 +102,20 @@ h2 {
     margin-bottom: 0;
 }
 
-div.links {
+.links {
+    .headerFont;
     display: inline;
     padding-left: 0.7em;
     font-size: @linkSizeFactor * @fontSizeH2;
 
     a {
-        .headerFont;
         color: @hl;
         text-decoration: none;
+        padding-bottom: 3pt;
+    }
+
+    a:hover, a:focus {
+        color: @hll;
     }
 }
 
@@ -130,11 +135,11 @@ p {
         padding-right: 2px;
     }
 
-    a:hover {
+    a:hover, a:focus {
         color: @hl;
     }
 
-    a:hover::before {
+    a:hover::before, a:focus::before {
         color: black;
     }
 
@@ -173,7 +178,7 @@ p {
         margin-bottom: @smallParSep;
     }
 
-    div.links {
+    .links {
         font-size: @linkSizeFactor * @smallFontSizeH2;
     }
 }
