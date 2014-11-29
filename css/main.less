@@ -60,8 +60,6 @@ html, body {
     line-height: 140%;
     font-size: @fontSize;
 
-    // text-align: justify;
-
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
     -ms-hyphens: auto;
@@ -124,42 +122,3 @@ p {
         margin-bottom: 20px;
     }
 }
-
-code {
-    // TODO
-}
-
-#pool {
-    display: none;
-    position: fixed;
-    bottom: 0px;
-    z-index: 99;
-    left: 0px;
-    height: 100px;
-    width: 100%;
-    background-color: @dk;
-    overflow: visible;
-    border-top: rgba(1, 1, 1, 0.5);
-}
-
-#waves {
-    width: 100%;
-    height: 100px;
-    background-image: url(graphics/pool.png);
-    background-repeat: repeat-x;
-    background-position: center top;
-    position: absolute;
-    bottom: 100px;
-    left: 0px;
-    z-index: 1;
-}
-
-.shark(@x, @y) {
-    margin: unit(@y, px) unit(@x, px);
-}
-
-// #shark-1 { .shark(190, 70) }
-// #shark-2 { .shark(240, 00) }
-#shark-3 { .shark(040, 50) }
-#shark-4 { .shark(140, 100) }
-#shark-5 { .shark(090, 20) }
