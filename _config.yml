@@ -1,0 +1,9 @@
+# Site settings
+title: david-peter.de
+email: mail@david-peter.de
+description: Personal website with a collection of my projects.
+baseurl: ""
+url: "http://david-peter.de/"
+
+# Build settings
+markdown: kramdown
