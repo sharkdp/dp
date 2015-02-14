@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Favorite music</title>
+        <meta name="description" content="A list of my favorite music albums in the last twelve months.">
+        <meta name="author" content="David Peter">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/skeleton.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Favorite music</h1>
+            <p>A list of my most-played albums in the last twelve months. Live data from <a href="http://lastfm.com/user/sharkdp">lastfm.com</a>.</p>
+        </div>
+        <div class="container" id="gamesContainer">
+            <i>Loading...</i>
+        </div>
+        <script id="albumTemplate" type="text/template">
+            <div class="game one-half column">
+                <h5>{{name}}</h5>
+                <p>
+                    <a href="{{url}}" target="_blank">
+                        <img src="{{cover}}" alt="{{name}}">
+                    </a>
+
+                    <strong>Artist:</strong> {{artist.name}}<br>
+                    <strong>Songs played:</strong> {{playcount}}
+                </p>
+            </div>
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script type="text/javascript" src="js/mustache.js"></script>
+        <script type="text/javascript" src="js/music.js"></script>
+    </body>
+</html>
