@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Board games</title>
+        <meta name="description" content="Board games collection">
+        <meta name="author" content="David Peter">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/skeleton.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Board game collection</h1>
+            <p>This is a list of my board games, automatically generated from <a href="http://boardgamegeek.com">boardgamegeek.com</a> data. The list is sorted by BGG rating.</p>
+        </div>
+        <div class="container" id="gamesContainer">
+            <i>Loading...</i>
+        </div>
+        <script id="gameTemplate" type="text/template">
+            <div class="game one-half column">
+                <h5>{{title}}</h5>
+                <p>
+                    <a href="http://www.boardgamegeek.com/boardgame/{{bggid}}" target="_blank">
+                        <img src="http:{{thumb}}" alt="{{title}}">
+                    </a>
+                    <strong>Players:</strong> {{players}}<br>
+                    <strong>BGG rating:</strong> {{rating}}<br>
+                    <strong>Time:</strong> {{time}}min
+                </p>
+            </div>
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script type="text/javascript" src="js/mustache.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+    </body>
+</html>
