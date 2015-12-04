@@ -1,34 +1,53 @@
 module Main where
 
 import Prelude
+
 import Control.Apply
-import Control.Bind
 
 import Data.Array
 import Data.Foldable (fold)
 import Data.String (joinWith, toUpper, split)
-import Data.Maybe
 import Data.Monoid (mempty)
 import Data.Int (toNumber)
 
 import qualified Text.Smolder.HTML as H
 import qualified Text.Smolder.Markup as H
 
+import Math
+
+import Signal.DOM
+
 import Flare
 import Flare.Drawing
 import Flare.Smolder
 
-import Math
 
-import Signal.DOM
+-- Example 1
+
+ui1 = (int "a" 6) * (int "b" 7)
+-- or: ui1 = lift2 (*) (int "a" 6) (int "b" 7)
+
+
+-- Example 2
 
 greet :: String -> String
 greet name = "Hello, " ++ fancy name ++ "!"
   where fancy = toUpper >>> split "" >>> joinWith "."
 
+ui2 = map greet (string "Your name:" "Nemo")
+
+
+-- Example 3
+
 coloredCircle :: Number -> Number -> Drawing
 coloredCircle hue radius =
   filled (fillColor (hsl hue 0.8 0.4)) (circle 50.0 50.0 radius)
+
+ui3 = lift2 coloredCircle (numberSlider "Hue"    0.0 360.0 1.0 140.0)
+                          (numberSlider "Radius" 2.0  45.0 0.1  25.0)
+
+
+-- Example 4
 
 plot :: Int -> Boolean -> Number -> Drawing
 plot n s time = shadow (style s) $
@@ -42,16 +61,23 @@ plot n s time = shadow (style s) $
         radius phi = 48.0 * abs (cos (0.5 * toNumber n * (phi + phi0)))
         phi0 = 0.001 * time
         style false = mempty
-        style true = shadowStyle
+        style true = shadowColor black <> shadowOffset 2.0 2.0 <> shadowBlur 2.0
 
-shadowStyle = shadowColor black <> shadowOffset 2.0 2.0 <> shadowBlur 2.0
-
-ui7 = lift3 plot (intSlider "Leaves" 2 10 6)
+ui4 = lift3 plot (intSlider "Leaves" 2 10 6)
                  (boolean "Shadow" false)
                  (lift animationFrame)
 
+
+-- Example 5
+
+toInt :: Boolean -> Int
 toInt false = 0
-toInt true = 1
+toInt true  = 1
+
+ui5 = foldp (+) 0 (map toInt (button "Increment"))
+
+
+-- Example 6
 
 table :: Int -> Int -> H.Markup
 table h w = H.table $ fold (map row (0 .. h))
@@ -61,21 +87,13 @@ table h w = H.table $ fold (map row (0 .. h))
 ui6 = lift2 table (intSlider "Height" 0 9 5)
                   (intSlider "Width" 0 9 5)
 
+
+-- Run and attach to DOM:
+
 main = do
-  runFlare "controls1" "output1" $
-    (int "a" 6) * (int "b" 7)
-    -- or: lift2 (*) (int "a" 6) (int "b" 7)
-
-  runFlareS "controls2" "output2" $
-    map greet (string "Your name:" "Nemo")
-
-  runFlareDrawing "controls3" "output3" $
-    lift2 coloredCircle (numberSlider "Hue"    0.0 360.0 1.0 140.0)
-                        (numberSlider "Radius" 2.0  45.0 0.1  25.0)
-
-  runFlareDrawing "controls4" "output4" ui7
-
-  runFlare "controls5" "output5" $
-    foldp (+) 0 (map toInt (button "Increment"))
-
-  runFlareHTML "controls6" "output6" ui6
+  runFlare        "controls1" "output1" ui1
+  runFlareS       "controls2" "output2" ui2
+  runFlareDrawing "controls3" "output3" ui3
+  runFlareDrawing "controls4" "output4" ui4
+  runFlare        "controls5" "output5" ui5
+  runFlareHTML    "controls6" "output6" ui6
