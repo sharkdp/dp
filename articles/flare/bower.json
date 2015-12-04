@@ -1,0 +1,15 @@
+{
+  "name": "flare-tutorial",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-flare": "^0.2.0"
+  },
+  "resolutions": {
+    "purescript-strings": "^0.7.0"
+  }
+}

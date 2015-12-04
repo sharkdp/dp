@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="David Peter">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Flare</title>
+        <link rel="stylesheet" type="text/css" href="../../css/main.css">
+        <link rel="stylesheet" type="text/css" href="main.css">
+    </head>
+    <body>
+        <div id="wrapper">
+        <div id="content">
+        <section>
+        <h1>Flare</h1>
+        <p>
+            Flare is a <em>special-purpose</em> UI library for Purescript. The
+            idea is to define the user interface and the logic of the program at the
+            same time. On the one hand this approach somewhat limits the number of use
+            cases, but on the other hand this allows for a remarkable expressiveness.
+        </p>
+        </section>
+
+        <section>
+        <h2>A first example</h2>
+        <p>
+            Imagine you want to build a really simple web application that
+            calculates the product <i>a</i> &times; <i>b</i> for two numbers <i>a</i>
+            and <i>b</i> which can be entered by the user.
+            Using Flare, we define the <em>user interface</em> and the <em>program logic</em>
+            in a single expression:
+        </p>
+<pre>
+<span id="L26" class="LineNr">26 </span><span class="Delimiter">(</span>int <span class="String">&quot;a&quot;</span> <span class="Number">6</span><span class="Delimiter">)</span> <span class="Operator">*</span> <span class="Delimiter">(</span>int <span class="String">&quot;b&quot;</span> <span class="Number">7</span><span class="Delimiter">)</span>
+</pre>
+        <p>
+            This code generates the following reactive web-interface<sup><a href="#fn1">1</a></sup>:
+        </p>
+        <div class="flare">
+            <div class="controls" id="controls1"></div>
+            <div class="output" id="output1"></div>
+        </div>
+        <p>
+            How does this work? Flare defines the function <code>int</code>
+            that takes two arguments: a label and an initial value<sup><a href="#fn2">2</a></sup>.  An expression
+            like <code>int <span class="String">&quot;a&quot;</span> <span class="Number">6</span></code> serves two purposes. It creates the input field with the label <i>"a"</i> and initial value 6,
+            and at the same time it serves as a placeholder for its <em>current value</em> in
+            the surrounding expression. If the user changes one of the input fields, the whole
+            expression is re-evaluated.
+        </p>
+
+        <h2>Pure functions</h2>
+        <p>
+            In functional programming languages, programs are built from small,
+            composable pieces that can be indivually tested. Suppose we have
+            a <em>pure</em> function <code>greet</code>, that takes a string
+            (a name) and returns a string (a greeting with a fancy version of
+            the name):
+        </p>
+<pre>
+<span id="L13" class="LineNr">13 </span>greet <span class="Operator">::</span> <span class="PreProc">String</span> <span class="Operator">-&gt;</span> <span class="PreProc">String</span>
+<span id="L14" class="LineNr">14 </span>greet name <span class="Operator">=</span> <span class="String">&quot;Hello, &quot;</span> <span class="Operator">++</span> fancy name <span class="Operator">++</span> <span class="String">&quot;!&quot;</span>
+<span id="L15" class="LineNr">15 </span>  <span class="Structure">where</span> fancy <span class="Operator">=</span> toUpper <span class="Operator">&gt;&gt;&gt;</span> split <span class="String">&quot;&quot;</span> <span class="Operator">&gt;&gt;&gt;</span> joinWith <span class="String">&quot;.&quot;</span>
+</pre>
+        <p>
+            To turn this into a web interface where users can enter their name,
+            we first need an appropriate Flare component that <em>contains</em>
+            a string. The function <code>string</code> creates
+            a simple text field from a given label and default value. Then, all we have to
+            do is to apply our function to the value <em>inside</em> the Flare component. We
+            can do so by mapping the function <code>greet</code> over the
+            component:
+        </p>
+<pre>
+<span id="L29" class="LineNr">29 </span>map greet <span class="Delimiter">(</span>string <span class="String">&quot;Your name:&quot;</span> <span class="String">&quot;Nemo&quot;</span><span class="Delimiter">)</span>
+</pre>
+        <p>
+            The result is the following small web application:
+        </p>
+        <div class="flare">
+            <div class="controls" id="controls2"></div>
+            <div class="output" id="output2"></div>
+        </div>
+        <p>The usage of <code>map</code> here is similar to mapping functions over lists, except
+            that the function is not applied to every element of a list, but rather to the
+            <em>stream of values</em> inside the text field (technically, this means that a Flare component is a <em>functor</em>).</p>
+
+        <h2>Multiple arguments</h2>
+
+        <p>
+            If our pure function takes more than one argument, we can not use <code>map</code>
+            to apply it to the values inside several Flare components. This is where <em>applicative functors</em> come into play: they allow us to <em>lift</em> functions of several
+            arguments into the realm of the functor (the Flare component). As an example, consider the following
+            function that takes two parameters, hue and radius, and returns a representation
+            of a small colored circle:
+        </p>
+<pre>
+<span id="L17" class="LineNr">17 </span>coloredCircle <span class="Operator">::</span> <span class="PreProc">Number</span> <span class="Operator">-&gt;</span> <span class="PreProc">Number</span> <span class="Operator">-&gt;</span> <span class="PreProc">Drawing</span>
+<span id="L18" class="LineNr">18 </span>coloredCircle hue radius <span class="Operator">=</span>
+<span id="L19" class="LineNr">19 </span>  filled <span class="Delimiter">(</span>fillColor <span class="Delimiter">(</span>hsl hue <span class="Float">0.8</span> <span class="Float">0.4</span><span class="Delimiter">))</span> <span class="Delimiter">(</span>circle <span class="Float">50.0</span> <span class="Float">50.0</span> radius<span class="Delimiter">)</span>
+</pre>
+        <p>
+            Note that this is a pure function without any side effects. Again, we can easily turn this into a web interface by creating two Flare
+            components of the appropriate type for the two parameters. Here, we will use
+            <code>numberSlider label min max step default</code>. Finally, the
+            higher order function <code>lift2</code> takes our two-argument function
+            and applies it to the current values inside the two components:
+        </p>
+
+<pre>
+<span id="L32" class="LineNr">32 </span>lift2 coloredCircle <span class="Delimiter">(</span>numberSlider <span class="String">&quot;Hue&quot;</span>    <span class="Float">0.0</span> <span class="Float">360.0</span> <span class="Float">1.0</span> <span class="Float">140.0</span><span class="Delimiter">)</span>
+<span id="L33" class="LineNr">33 </span>                    <span class="Delimiter">(</span>numberSlider <span class="String">&quot;Radius&quot;</span> <span class="Float">2.0</span>  <span class="Float">45.0</span> <span class="Float">0.1</span>  <span class="Float">25.0</span><span class="Delimiter">)</span>
+</pre>
+        <p>
+            This results in the following interface:
+        </p>
+        <div class="flare">
+            <div class="controls" id="controls3"></div>
+            <canvas class="output" id="output3" width="100" height="100"></canvas>
+        </div>
+        <p>
+            It should be noted that the first example in this tutorial is actually
+            equivalent to
+        </p>
+<pre>
+<span id="L28a" class="LineNr">28 </span>lift2 <span class="Delimiter">(</span><span class="Operator">*</span><span class="Delimiter">)</span> <span class="Delimiter">(</span>int <span class="String">&quot;a&quot;</span> <span class="Number">6</span><span class="Delimiter">)</span> <span class="Delimiter">(</span>int <span class="String">&quot;b&quot;</span> <span class="Number">7</span><span class="Delimiter">)</span>
+</pre>
+        <p>
+            where the multiplication operator <code><span class="Delimiter">(</span><span class="Operator">*</span><span class="Delimiter">)</span></code> is nothing but a two-argument
+            function that is <em>lift</em>ed to work on the values inside the input fields.
+        </p>
+
+        <h2>Integration with other signals</h2>
+        <p>
+            The Flare library is built on top of Purescripts Signal library
+            which is inspired by the corresponding module in Elm. In fact,
+            a <em>Flare</em> is just a <em>Signal</em> with a collection
+            of input fields.
+            In this section, we demonstrate how Flare works together with
+            other types of Signals. As a showcase, we want to integrate
+            time to create a small animation:
+        </p>
+        <div class="flare">
+            <div class="controls" id="controls4"></div>
+            <canvas class="output" id="output4" width="100" height="100"></canvas>
+        </div>
+        <p>
+            Again, we start with a pure function. It takes three parameters,
+            the number of leaves, a boolean flag which enables or disables
+            the shadow, and a rotation angle:
+        </p>
+<pre>
+<span id="L28" class="LineNr">28 </span>plot <span class="Operator">::</span> <span class="PreProc">Int</span> <span class="Operator">-&gt;</span> <span class="PreProc">Boolean</span> <span class="Operator">-&gt;</span> <span class="PreProc">Number</span> <span class="Operator">-&gt;</span> <span class="PreProc">Drawing</span>
+plot nLeaves shadow phi0 <span class="Operator">=</span> ...
+</pre>
+        <p>
+            Similar to before, we create a slider for the first argument. Note
+            that we have replaced <code>numberSlider</code> by <code>intSlider</code>
+            (type safety first).
+            For the second argument, we use the function <code>boolean</code>
+            which creates a checkbox that returns either <code>true</code>
+            or <code>false</code>.<br>
+            Finally, for the third argument we want to have a time-dependent rotation angle. We will
+            use the <code>animationFrame</code> Signal which yields the
+            current time on every redraw of the frame in the browser.
+            We can use the Signal in our expression for the Flare UI, by using
+            the function <code>lift</code>:
+        </p>
+<pre>
+<span id="L41" class="LineNr">41 </span>lift3 plot <span class="Delimiter">(</span>intSlider <span class="String">&quot;Leaves&quot;</span> <span class="Number">2</span> <span class="Number">10</span> <span class="Number">6</span><span class="Delimiter">)</span>
+<span id="L42" class="LineNr">42 </span>           <span class="Delimiter">(</span>boolean <span class="String">&quot;Shadow&quot;</span> false<span class="Delimiter">)</span>
+<span id="L43" class="LineNr">43 </span>           <span class="Delimiter">(</span>lift animationFrame<span class="Delimiter">)</span>
+</pre>
+        <p>
+            With three lines of code, we have turned our static <code>plot</code>
+            function into an interactive animation.
+        </p>
+
+        <h2>Stateful interfaces</h2>
+        <p>
+            So far, our examples did not include any notion of <em>state</em>.
+            The output was simply given as a function of the current input values.
+            To incorporate state, Flare uses the function <code>foldp</code> that
+            works analogous to the corresponding function for signals. The <i>p</i>
+            in <code>foldp</code> stands for <em>past</em> and indicates that
+            the output can now depend on <em>past values</em> of the input fields:
+        </p>
+<pre>
+<span id="L51" class="LineNr">51 </span>foldp <span class="Delimiter">(</span><span class="Operator">+</span><span class="Delimiter">)</span> <span class="Number">0</span> <span class="Delimiter">(</span>map toInt <span class="Delimiter">(</span>button <span class="String">&quot;Increment&quot;</span><span class="Delimiter">))</span>
+</pre>
+        <p>
+            Here, <code>button</code> is a simple Flare component that returns <code>true</code> if it is pressed and <code>false</code> otherwise. We use a helper function <code>toInt</code> that converts <code>true</code> to 1 and <code>false</code> to 0, in order to create a simple counter:
+        </p>
+        <div class="flare">
+            <div class="controls" id="controls5"></div>
+            <div class="output" id="output5"></div>
+        </div>
+        <p>
+            Notice how <code>foldp</code> uses the internal accumulator to sum the time-varying stream of zeros and ones.
+        </p>
+
+        <h2>HTML output</h2>
+        <p>
+            We have seen simple text outputs and canvas graphics, but often
+            we will have HTML as a target output. Flare provides an interface to
+            Purescripts <em>Smolder</em> library that offers a nice way to
+            create HTML markup:
+        </p>
+<pre>
+<span id="L55" class="LineNr">55 </span>table <span class="Operator">::</span> <span class="PreProc">Int</span> <span class="Operator">-&gt;</span> <span class="PreProc">Int</span> <span class="Operator">-&gt;</span> <span class="PreProc">H.Markup</span>
+<span id="L56" class="LineNr">56 </span>table h w <span class="Operator">=</span> <span class="PreProc">H</span><span class="Operator">.</span>table <span class="Operator">$</span> fold <span class="Delimiter">(</span>map row <span class="Delimiter">(</span><span class="Number">0</span> <span class="Operator">..</span> h<span class="Delimiter">))</span>
+<span id="L57" class="LineNr">57 </span>  <span class="Structure">where</span> row i <span class="Operator">=</span> <span class="PreProc">H</span><span class="Operator">.</span>tr <span class="Delimiter">(</span>fold <span class="Delimiter">(</span>map <span class="Delimiter">(</span>cell i<span class="Delimiter">)</span> <span class="Delimiter">(</span><span class="Number">0</span> <span class="Operator">..</span> w<span class="Delimiter">)))</span>
+<span id="L58" class="LineNr">58 </span>        cell i j <span class="Operator">=</span> <span class="PreProc">H</span><span class="Operator">.</span>td <span class="Delimiter">(</span><span class="PreProc">H</span><span class="Operator">.</span>text <span class="Delimiter">(</span>show i <span class="Operator">++</span> <span class="String">&quot;,&quot;</span> <span class="Operator">++</span> show j<span class="Delimiter">))</span>
+</pre>
+        <p>
+            We turn this pure function into a Flare UI in the usual way...
+        </p>
+<pre>
+<span id="L60" class="LineNr">60 </span>lift2 table <span class="Delimiter">(</span>intSlider <span class="String">"Height"</span> <span class="Number">0</span> <span class="Number">9</span> <span class="Number">5</span><span class="Delimiter">)</span>
+            <span class="Delimiter">(</span>intSlider <span class="String">"Width"</span>  <span class="Number">0</span> <span class="Number">9</span> <span class="Number">5</span><span class="Delimiter">)</span>
+</pre>
+        <p>
+            ... to create our last example:
+        </p>
+        <div class="flare">
+            <div class="controls" id="controls6"></div>
+            <div class="output" id="output6"></div>
+        </div>
+        <p></p>
+        </section>
+
+        <section>
+        <h2>Read on</h2>
+        <p>
+            Additional reading material:
+        </p>
+        <ul>
+            <li><a href="http://sharkdp.github.io/purescript-flare/">More Flare examples</a></li>
+            <li><a href="https://github.com/sharkdp/purescript-flare">Flare on Github</a></li>
+            <li><a href="http://pursuit.purescript.org/packages/purescript-flare/">Flare documentation on Pursuit</a></li>
+            <!-- <li><a href="src/Main.purs">The full source code for this page</a></li> -->
+            <li><a href="https://github.com/Gabriel439/Haskell-Typed-Spreadsheet-Library/">typed-spreadsheet: The Haskell library that inspired Flare</a></li>
+            <li><a href="http://www.purescript.org/">The Purescript programming language</a></li>
+            <li><a href="https://github.com/bodil/purescript-signal">Purescript Signal library</a></li>
+            <li><a href="https://github.com/paf31/purescript-drawing">Purescript Drawing library</a></li>
+            <li><a href="https://github.com/bodil/purescript-smolder">Purescript Smolder library</a></li>
+            <li><a href="https://en.wikibooks.org/wiki/Haskell/Applicative_functors">Applicative functors</a></li>
+            <li><a href="http://david-peter.de/factorization-diagrams/">Factorization diagrams (uses Flare)</a></li>
+            <li><a href="http://david-peter.de/">My personal website</a></li>
+        </ul>
+        </section>
+
+        <section>
+        <h2>Footnotes</h2>
+        <p>
+            <sup id="fn1">1</sup> The layout can be easily changed via CSS. We
+            have also left out some "boilerplate" code that is always the same throughout this article:
+            a few lines of Purescript and two lines of HTML.<br>
+
+            <sup id="fn2">2</sup> In Purescript (or Haskell), function application <i>f(x, y)</i> is simply written as <code>f x y</code>.
+        </p>
+        </section>
+
+        </div>
+        </div>
+        <script type="text/javascript" src="../../js/zepto.min.js"></script>
+        <script type="text/javascript" src="../../js/hyphenate.js"></script>
+        <script type="text/javascript" src="../../js/main.js"></script>
+        <script type="text/javascript" src="flares.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-39945208-2', 'david-peter.de');
+            ga('send', 'pageview');
+        </script>
+    </body>
+</html>

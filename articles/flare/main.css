@@ -1,0 +1,192 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700);
+
+h1::before {
+    content: "";
+    margin-left: 2px;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+pre, code {
+    font-size: 16px;
+    font-family: 'Source Code Pro', courier;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+}
+
+code {
+    padding: 1px 4px 1px 4px;
+}
+
+pre {
+    margin-left: 40px;
+    margin-right: 40px;
+    padding: 10px;
+}
+
+.flare-input {
+    margin-bottom: 2px;
+}
+
+.flare-input > input:invalid {
+    background-color: #ff5050;
+}
+
+.flare-input-number, .flare-input-int-number {
+    width: 80px;
+}
+
+.flare-input-string {
+    width: 120px;
+}
+
+.flare-input-number-range {
+    width: 150px;
+    padding: 0px;
+    margin: 0px;
+}
+
+label {
+    min-width: 60px;
+    margin-right: 50px;
+    display: inline-block;
+    float: left;
+    line-height: 1.4;
+}
+
+.flare, .flare-input input {
+    font-family: 'Lato', sans-serif;
+    font-size: 19px;
+}
+
+input {
+    padding-left: 3px;
+}
+
+.flare {
+    margin-left: 40px;
+    margin-right: 40px;
+    padding: 10px;
+    overflow: hidden;
+    border: 1px dashed #ccc;
+}
+
+.controls {
+    float: left;
+}
+
+.output {
+    margin-left: 80px;
+    float: left;
+}
+
+sup {
+    position: relative;
+    top: -0.1em;
+    font-size: 0.6em;
+}
+
+sup a {
+    color: black;
+}
+
+sup a::before {
+    content: "[";
+    padding-right: 0px;
+}
+
+sup a::after {
+    content: "]";
+}
+
+sup a:hover, sup a:focus {
+    color: black;
+}
+
+#controls1 label {
+    min-width: 40px;
+    margin-right: 0px;
+}
+
+#output1 {
+    margin-top: 5px;
+    font-size: 40px;
+}
+
+#controls2 label {
+    display: block;
+    float: none;
+}
+
+#output2 {
+    overflow: hidden;
+}
+
+/* Syntax highlighting */
+.LineNr {
+    display: none;
+}
+
+.String {
+    color: #E91E63;
+}
+
+.Float, .Number {
+    color: #1339E8;
+}
+
+.Operator {
+    font-weight: 700;
+}
+
+.Delimiter {
+    color: #444;
+}
+
+.Structure {
+    font-weight: 700;
+}
+
+.PreProc {
+    color: #03A9F4;
+    font-style: italic;
+}
+
+table {
+    border-spacing: 0px;
+    border-collapse: collapse;
+    width: 300px;
+    height: 300px;
+}
+
+td {
+    text-align: center;
+    border: 1px solid black;
+    padding: 3px;
+    font-size: 11px;
+}
+
+ul a {
+    color: #1339E8;
+}
+
+input[type="range"] {
+    width: 130px;
+    padding: 0px;
+    margin: 0px;
+}
+
+@media screen and (max-width: 950px) {
+    pre {
+        margin-left: 20px;
+        margin-right: 20px;
+        font-size: 14px;
+    }
+
+    .flare {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
