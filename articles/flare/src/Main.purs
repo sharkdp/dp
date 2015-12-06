@@ -5,7 +5,7 @@ import Prelude
 import Control.Apply
 
 import Data.Array
-import Data.Foldable (fold)
+import Data.Foldable (foldMap)
 import Data.String (joinWith, toUpper, split)
 import Data.Monoid (mempty)
 import Data.Int (toNumber)
@@ -80,8 +80,8 @@ ui5 = foldp (+) 0 (map toInt (button "Increment"))
 -- Example 6
 
 table :: Int -> Int -> H.Markup
-table h w = H.table $ fold (map row (0 .. h))
-  where row i = H.tr (fold (map (cell i) (0 .. w)))
+table h w = H.table $ foldMap row (0 .. h)
+  where row i = H.tr $ foldMap (cell i) (0 .. w)
         cell i j = H.td (H.text (show i ++ "," ++ show j))
 
 ui6 = lift2 table (intSlider "Height" 0 9 5)
