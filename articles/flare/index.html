@@ -188,10 +188,11 @@ plot nLeaves shadow phi0 <span class="Operator">=</span> ...
             the output can now depend on <em>past values</em> of the input fields:
         </p>
 <pre>
-<span id="L51" class="LineNr">51 </span>foldp <span class="Delimiter">(</span><span class="Operator">+</span><span class="Delimiter">)</span> <span class="Number">0</span> <span class="Delimiter">(</span>map toInt <span class="Delimiter">(</span>button <span class="String">&quot;Increment&quot;</span><span class="Delimiter">))</span>
+<span id="L51" class="LineNr">51 </span>foldp <span class="Delimiter">(</span><span class="Operator">+</span><span class="Delimiter">)</span> <span class="Number">0</span> <span class="Delimiter">(</span>button <span class="String">&quot;Increment&quot;</span> <span class="Number">0</span> <span class="Number">1</span><span class="Delimiter">)</span>
 </pre>
         <p>
-            Here, <code>button</code> is a simple Flare component that returns <code>true</code> if it is pressed and <code>false</code> otherwise. We use a helper function <code>toInt</code> that converts <code>true</code> to 1 and <code>false</code> to 0, in order to create a simple counter:
+            Here, <code>button</code> is a simple Flare component that returns the first value <code><span class="Number">0</span></code> in its default state and the second value <code><span class="Number">1</span></code> when it is pressed. This allows us
+            to build a simple counter:
         </p>
         <div class="flare">
             <div class="controls" id="controls5"></div>

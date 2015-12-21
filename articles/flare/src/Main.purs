@@ -70,12 +70,7 @@ ui4 = lift3 plot (intSlider "Leaves" 2 10 6)
 
 -- Example 5
 
-toInt :: Boolean -> Int
-toInt false = 0
-toInt true  = 1
-
-ui5 = foldp (+) 0 (map toInt (button "Increment"))
-
+ui5 = foldp (+) 0 (button "Increment" 0 1)
 
 -- Example 6
 
@@ -91,9 +86,9 @@ ui6 = lift2 table (intSlider "Height" 0 9 5)
 -- Run and attach to DOM:
 
 main = do
-  runFlare        "controls1" "output1" ui1
-  runFlareS       "controls2" "output2" ui2
+  runFlareShow    "controls1" "output1" ui1
+  runFlare        "controls2" "output2" ui2
   runFlareDrawing "controls3" "output3" ui3
   runFlareDrawing "controls4" "output4" ui4
-  runFlare        "controls5" "output5" ui5
+  runFlareShow    "controls5" "output5" ui5
   runFlareHTML    "controls6" "output6" ui6
