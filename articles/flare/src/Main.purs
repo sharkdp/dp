@@ -10,8 +10,8 @@ import Data.String (joinWith, toUpper, split)
 import Data.Monoid (mempty)
 import Data.Int (toNumber)
 
-import qualified Text.Smolder.HTML as H
-import qualified Text.Smolder.Markup as H
+import Text.Smolder.HTML as H
+import Text.Smolder.Markup as H
 
 import Math
 
@@ -24,14 +24,12 @@ import Flare.Smolder
 
 -- Example 1
 
-ui1 = (int "a" 6) * (int "b" 7)
--- or: ui1 = lift2 (*) (int "a" 6) (int "b" 7)
-
+ui1 = lift2 (*) (int "a" 6) (int "b" 7)
 
 -- Example 2
 
 greet :: String -> String
-greet name = "Hello, " ++ fancy name ++ "!"
+greet name = "Hello, " <> fancy name <> "!"
   where fancy = toUpper >>> split "" >>> joinWith "."
 
 ui2 = map greet (string "Your name:" "Nemo")
@@ -77,7 +75,7 @@ ui5 = foldp (+) 0 (button "Increment" 0 1)
 table :: Int -> Int -> H.Markup
 table h w = H.table $ foldMap row (0 .. h)
   where row i = H.tr $ foldMap (cell i) (0 .. w)
-        cell i j = H.td (H.text (show i ++ "," ++ show j))
+        cell i j = H.td (H.text (show i <> "," <> show j))
 
 ui6 = lift2 table (intSlider "Height" 0 9 5)
                   (intSlider "Width" 0 9 5)

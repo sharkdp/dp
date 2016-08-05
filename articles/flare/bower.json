@@ -7,9 +7,6 @@
     "output"
   ],
   "dependencies": {
-    "purescript-flare": "^0.4.0"
-  },
-  "resolutions": {
-    "purescript-strings": "^0.7.0"
+    "purescript-flare": "^1.0.0"
   }
 }

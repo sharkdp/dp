@@ -33,7 +33,7 @@
             in a single expression:
         </p>
 <pre>
-<span id="L26" class="LineNr">26 </span><span class="Delimiter">(</span>int <span class="String">&quot;a&quot;</span> <span class="Number">6</span><span class="Delimiter">)</span> <span class="Operator">*</span> <span class="Delimiter">(</span>int <span class="String">&quot;b&quot;</span> <span class="Number">7</span><span class="Delimiter">)</span>
+<span id="L26" class="LineNr">26 </span>lift2 (<span class="Operator">*</span>) <span class="Delimiter">(</span>int <span class="String">&quot;a&quot;</span> <span class="Number">6</span><span class="Delimiter">)</span> <span class="Delimiter">(</span>int <span class="String">&quot;b&quot;</span> <span class="Number">7</span><span class="Delimiter">)</span>
 </pre>
         <p>
             This code generates the following reactive web-interface<sup><a href="#fn1">1</a></sup>:
@@ -61,7 +61,7 @@
         </p>
 <pre>
 <span id="L13" class="LineNr">13 </span>greet <span class="Operator">::</span> <span class="PreProc">String</span> <span class="Operator">-&gt;</span> <span class="PreProc">String</span>
-<span id="L14" class="LineNr">14 </span>greet name <span class="Operator">=</span> <span class="String">&quot;Hello, &quot;</span> <span class="Operator">++</span> fancy name <span class="Operator">++</span> <span class="String">&quot;!&quot;</span>
+<span id="L14" class="LineNr">14 </span>greet name <span class="Operator">=</span> <span class="String">&quot;Hello, &quot;</span> <span class="Operator">&lt;&gt;</span> fancy name <span class="Operator">&lt;&gt;</span> <span class="String">&quot;!&quot;</span>
 <span id="L15" class="LineNr">15 </span>  <span class="Structure">where</span> fancy <span class="Operator">=</span> toUpper <span class="Operator">&gt;&gt;&gt;</span> split <span class="String">&quot;&quot;</span> <span class="Operator">&gt;&gt;&gt;</span> joinWith <span class="String">&quot;.&quot;</span>
 </pre>
         <p>
@@ -120,17 +120,7 @@
             <div class="controls" id="controls3"></div>
             <canvas class="output" id="output3" width="100" height="100"></canvas>
         </div>
-        <p>
-            It should be noted that the first example in this tutorial is actually
-            equivalent to
-        </p>
-<pre>
-<span id="L28a" class="LineNr">28 </span>lift2 <span class="Delimiter">(</span><span class="Operator">*</span><span class="Delimiter">)</span> <span class="Delimiter">(</span>int <span class="String">&quot;a&quot;</span> <span class="Number">6</span><span class="Delimiter">)</span> <span class="Delimiter">(</span>int <span class="String">&quot;b&quot;</span> <span class="Number">7</span><span class="Delimiter">)</span>
-</pre>
-        <p>
-            where the multiplication operator <code><span class="Delimiter">(</span><span class="Operator">*</span><span class="Delimiter">)</span></code> is nothing but a two-argument
-            function that is <em>lift</em>ed to work on the values inside the input fields.
-        </p>
+        <p></p>
 
         <h2>Integration with other signals</h2>
         <p>
@@ -213,7 +203,7 @@ plot nLeaves shadow phi0 <span class="Operator">=</span> ...
 <span id="L82" class="LineNr">82 </span>table <span class="Operator">::</span> <span class="PreProc">Int</span> <span class="Operator">-&gt;</span> <span class="PreProc">Int</span> <span class="Operator">-&gt;</span> <span class="PreProc">H</span><span class="Operator">.</span><span class="PreProc">Markup</span>
 <span id="L83" class="LineNr">83 </span>table h w <span class="Operator">=</span> <span class="PreProc">H</span><span class="Operator">.</span>table <span class="Operator">$</span> foldMap row <span class="Delimiter">(</span><span class="Number">0</span> <span class="Operator">..</span> h<span class="Delimiter">)</span>
 <span id="L84" class="LineNr">84 </span>  <span class="Structure">where</span> row i <span class="Operator">=</span> <span class="PreProc">H</span><span class="Operator">.</span>tr <span class="Operator">$</span> foldMap <span class="Delimiter">(</span>cell i<span class="Delimiter">)</span> <span class="Delimiter">(</span><span class="Number">0</span> <span class="Operator">..</span> w<span class="Delimiter">)</span>
-<span id="L85" class="LineNr">85 </span>        cell i j <span class="Operator">=</span> <span class="PreProc">H</span><span class="Operator">.</span>td <span class="Delimiter">(</span><span class="PreProc">H</span><span class="Operator">.</span>text <span class="Delimiter">(</span>show i <span class="Operator">++</span> <span class="String">&quot;,&quot;</span> <span class="Operator">++</span> show j<span class="Delimiter">))</span>
+<span id="L85" class="LineNr">85 </span>        cell i j <span class="Operator">=</span> <span class="PreProc">H</span><span class="Operator">.</span>td <span class="Delimiter">(</span><span class="PreProc">H</span><span class="Operator">.</span>text <span class="Delimiter">(</span>show i <span class="Operator">&lt;&gt;</span> <span class="String">&quot;,&quot;</span> <span class="Operator">&lt;&gt;</span> show j<span class="Delimiter">))</span>
 </pre>
         <p>
             We turn this pure function into a Flare UI in the usual way...
