@@ -176,6 +176,7 @@ input[type="range"] {
     width: 130px;
     padding: 0px;
     margin: 0px;
+    border: 1px solid transparent;
 }
 
 @media screen and (max-width: 950px) {
