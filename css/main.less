@@ -69,12 +69,7 @@ html, body {
     font-size: @fontSize;
 }
 
-.pad(@width) {
-    padding-left: unit(@width, px);
-}
-
 h1 {
-    .pad(6);
     .headerFont;
     font-size: @fontSizeH1;
 }
@@ -86,7 +81,6 @@ h1::before {
 
 h2 {
     display: inline-block;
-    .pad(10);
     .headerFont;
     font-size: @fontSizeH2;
     margin-top: 0;
@@ -111,7 +105,6 @@ h2 {
 }
 
 p {
-    .pad(10);
     .textFont;
     margin-bottom: @parSep;
 
@@ -185,7 +178,6 @@ ul {
 @media screen and (max-width: 480px) {
     div.links {
         margin-top: 0.25 * @smallParSep;
-        .pad(10);
         display: block;
     }
 }
