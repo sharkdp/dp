@@ -7,7 +7,7 @@ function showCachedResult() {
     exit();
 }
 
-$bgg_api_url = 'http://boardgamegeek.com/xmlapi2/collection?username=sharkdp&own=1&stats=1';
+$bgg_api_url = 'https://boardgamegeek.com/xmlapi2/collection?username=sharkdp&own=1&stats=1';
 
 $res = file_get_contents($bgg_api_url);
 if (!$res) {

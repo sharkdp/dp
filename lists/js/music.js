@@ -5,7 +5,7 @@
 'use strict';
 
 $(document).ready(function() {
-    var lastfmURL = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=sharkdp&api_key=8f892de4deca9e6ef1d3e10224019a3a&format=json&period=12month';
+    var lastfmURL = 'https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=sharkdp&api_key=8f892de4deca9e6ef1d3e10224019a3a&format=json&period=12month';
     $.getJSON(lastfmURL, function(res) {
         var container = $("#gamesContainer");
 
