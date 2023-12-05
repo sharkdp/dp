@@ -2,7 +2,7 @@
 
 lessc --verbose css/main.less css/main.css
 
-yuicompressor css/main.css > css/main.min.css
+python -m csscompressor css/main.css > css/main.min.css
 mv css/main.min.css css/main.css
 
 closure-compiler js/zepto.min.js js/hyphenate.js js/main.js > js/main.min.js
