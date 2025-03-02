@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 lessc --verbose css/main.less css/main.css
 
 python -m csscompressor css/main.css > css/main.min.css
