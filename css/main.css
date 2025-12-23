@@ -62,7 +62,7 @@ h1 {
     font-size: var(--font-size-h1);
     margin-top: var(--par-sep);
     margin-bottom: calc(0.8 * var(--par-sep));
-    background: linear-gradient(to right, var(--hl), var(--hll)) no-repeat bottom;
+    background: linear-gradient(to right, color-mix(in srgb, var(--hl) 50%, transparent), transparent) no-repeat bottom;
     background-size: 100% 3px;
     padding-bottom: 8px;
 }
