@@ -70,7 +70,7 @@ html, body {
 }
 
 h1 {
-    .headerFont;
+    .headerFont();
     font-size: @fontSizeH1;
     margin-top: @parSep;
     margin-bottom: 0.8 * @parSep;
@@ -83,14 +83,14 @@ h1::before {
 
 h2 {
     display: inline-block;
-    .headerFont;
+    .headerFont();
     font-size: @fontSizeH2;
     margin-top: 0;
     margin-bottom: 0;
 }
 
 .links {
-    .headerFont;
+    .headerFont();
     display: inline;
     padding-left: 0.7em;
     font-size: @linkSizeFactor * @fontSizeH2;
@@ -107,7 +107,7 @@ h2 {
 }
 
 p {
-    .textFont;
+    .textFont();
     margin-bottom: @parSep;
 
     hyphens: auto;
@@ -139,7 +139,7 @@ p {
 }
 
 ul {
-    .textFont;
+    .textFont();
 }
 
 @media screen and (max-width: (@contentWidth + 2 * @marginSide)) {
@@ -166,12 +166,12 @@ ul {
     }
 
     p {
-        .textFont;
+        .textFont();
         margin-bottom: @smallParSep;
     }
 
     ul {
-        .textFont;
+        .textFont();
     }
 
     .links {
