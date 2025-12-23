@@ -1,0 +1,102 @@
+@import url(https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap);
+
+h1 {
+    background: none;
+    font-size: 34px;
+    padding-bottom: 0;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+pre,
+code {
+    font-size: 16px;
+    font-family: 'Fira Code', monospace;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+}
+
+code {
+    padding: 1px 4px 1px 4px;
+}
+
+pre {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 15px 20px;
+    overflow-x: auto;
+}
+
+blockquote {
+    margin-left: 40px;
+    margin-right: 40px;
+    padding: 15px 20px;
+    background-color: #f9f9f9;
+    border-left: 4px solid var(--hl);
+    font-style: italic;
+}
+
+h3 {
+    font-family: var(--header-font);
+    font-weight: 700;
+    color: var(--dk);
+    font-size: 22px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.Number {
+    color: #1339E8;
+    font-weight: bold;
+}
+
+.Comment {
+    color: #888;
+    font-style: italic;
+}
+
+.PreProc {
+    color: #03A9F4;
+}
+
+sup {
+    font-size: 0.7em;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+    top: -0.5em;
+}
+
+.footnote {
+    font-size: 0.85em;
+    color: #555;
+}
+
+p img {
+    float: none;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto 40px auto;
+}
+
+section+section {
+    clear: both;
+}
+
+@media screen and (max-width: 950px) {
+    pre {
+        font-size: 14px;
+    }
+
+    blockquote {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    p img {
+        margin: 15px auto;
+    }
+}

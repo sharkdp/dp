@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="David Peter">
+    <meta name="description" content="Exploring the difference between binary and text files.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The difference between "binary" and "text" files</title>
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="content">
+            <section>
+                <h1>The difference between "binary" and "text" files</h1>
+                <p>
+                    This article explores the topic of "binary" and "text" files. What is the difference
+                    between the two (if any)? Is there a clear definition for what constitutes a "binary"
+                    or a "text" file?
+                </p>
+                <p>
+                    We start our journey with two candidate files whose content we would intuitively
+                    categorize as "text" and "binary" data, respectively:
+                </p>
+                <pre>
+echo "hello 🌍" > message
+convert -size 1x1 xc:white png:white
+</pre>
+                <p>
+                    We have created two files: A file named <code>message</code> with the textual content
+                    <em>"hello 🌍"</em> (including the Unicode symbol
+                    <a href="https://unicode-table.com/en/1F30D/">"Earth Globe Europe-Africa"</a>) and a
+                    PNG image with a single white pixel called <code>white</code>. File extensions are
+                    deliberately left out.
+                </p>
+                <p>
+                    To demonstrate that some programs distinguish between "text" and "binary" files,
+                    check out how <code>grep</code> changes its behavior:
+                </p>
+                <pre>
+▶ grep -R hello
+message:hello 🌍
+
+▶ grep -R PNG
+Binary file white matches
+</pre>
+                <p>
+                    <code>diff</code> does something similar:
+                </p>
+                <pre>
+▶ echo "hello world" > other-message
+▶ diff other-message message
+1c1
+< hello world
+---
+> hello 🌍
+
+▶ convert -size 1x1 xc:black png:black
+▶ diff black white
+Binary files black and white differ
+</pre>
+                <p>
+                    How do these programs distinguish between "text" and "binary" files?
+                </p>
+                <p>
+                    Before we answer this question, let us first try to come up with a definition.
+                    Clearly, on a fundamental file-system level, every file is just a collection of
+                    bytes and could therefore be viewed as binary data. On the other hand, a distinction
+                    between "text" and "non-text" (hereafter: "binary") data seems helpful for programs
+                    like <code>grep</code> or <code>diff</code>, if only not to mess up the output of
+                    your terminal emulator.
+                </p>
+                <p>
+                    So maybe we can start by defining "text" data. It seems reasonable to begin with an
+                    abstract notion of text as being a sequence of
+                    <a href="https://en.wikipedia.org/wiki/Unicode">Unicode code points</a>. Examples of
+                    code points are characters like <code>k</code>, <code>ä</code> or <code>א</code>, as
+                    well as special symbols like <code>☢</code> or <code>🙈</code>. To
+                    store a given text as a sequence of bytes, we need to choose an <em>encoding</em>.
+                    If we want to be able to represent the whole Unicode range, we typically choose UTF-8,
+                    sometimes UTF-16 or UTF-32. Historically, encodings which support just a part of
+                    todays Unicode are also important. The most prominent ones are US-ASCII and Latin1
+                    (ISO 8859-1), but there are many more. And all of these look different on a byte level.
+                </p>
+                <p>
+                    Given just the contents of a file (not the history on how it was created), we can
+                    therefore try the following definition:
+                </p>
+                <blockquote>
+                    A file is called "text file" if its content consists of an encoded sequence of
+                    Unicode code points.
+                </blockquote>
+                <p>
+                    There are two practical problems with this definition. First, we would need a list
+                    of <em>all possible</em> encodings. Second, in order to test if the contents of a
+                    file is encoded in a given encoding, we would have to decode the <em>whole</em>
+                    contents of the file and see if it succeeds<sup>1</sup>. The whole process would
+                    be really slow.
+                </p>
+                <p>
+                    It turns out that there is a much faster way to distinguish between text and binary
+                    files, but it comes at the cost of precision.
+                </p>
+                <p>
+                    To see how this works, let's go back to our two candidate files and explore their
+                    byte level content. I am using <a href="https://github.com/sharkdp/hexyl">hexyl</a>
+                    as a hex viewer, but you can also use <code>hexdump -C</code>:
+                </p>
+                <p>
+                    <img src="hexdump.png" alt="Binary content of 'message' and 'white'" loading="lazy">
+                </p>
+                <p>
+                    Note that both files contain bytes within and outside of the ASCII range
+                    (<code>00</code>…<code>7f</code>). The four bytes <code>f0 9f 8c 8d</code> in the
+                    <code>message</code> file, for example, are the UTF-8 encoded version of the Unicode
+                    code point <code>U+1F30D</code> (🌍). On the other hand, the bytes <code>50 4e 47</code>
+                    at the beginning of the <code>white</code> image are a simple ASCII-encoded version
+                    of the characters <code>PNG</code><sup>2</sup>.
+                </p>
+                <p>
+                    So clearly, looking at bytes outside the ASCII range can not be used as a method to
+                    detect "binary" files. However, there <em>is</em> a difference between the two files.
+                    The image file contains a lot of NULL bytes (<code>00</code>) while the short text
+                    message does not. It turns out that this can be turned into a simple <em>heuristic</em>
+                    method to detect binary files, since a lot of encoded text data does not contain any
+                    NULL bytes (even though it might be legal).
+                </p>
+                <p>
+                    In fact, this is exactly what <code>diff</code> and <code>grep</code> use to detect
+                    "binary" files. The following macro is included in
+                    <a
+                        href="https://github.com/Distrotech/diffutils/blob/9e70e1ce7aaeff0f9c428d1abc9821589ea054f1/src/io.c#L85-L88">diff's
+                        source code (src/io.c)</a>:
+                </p>
+                <pre>
+#define binary_file_p(buf, size) (memchr (buf, 0, size) != 0)
+</pre>
+                <p>
+                    Here, the <a
+                        href="https://linux.die.net/man/3/memchr"><code>memchr(const void *s, int c, size_t n)</code></a>
+                    function is used to search the initial <code>size</code> bytes of the memory region
+                    starting at <code>buf</code> for the character <code>0</code>. To speed this process
+                    up even more, typically only the first few bytes of the file are read into the buffer
+                    <code>buf</code> (e.g. 1024 bytes). To summarize, <code>grep</code> and <code>diff</code>
+                    use the following heuristic approach:
+                </p>
+                <blockquote>
+                    A file is very likely to be a "text file" if the first 1024 bytes of its content
+                    do not contain any NULL bytes.
+                </blockquote>
+                <p>
+                    Note that there are counterexamples where this fails. For example, even if unlikely,
+                    UTF-8-encoded text can legally contain NULL bytes. Conversely, some particular binary
+                    formats (like binary <a href="https://en.wikipedia.org/wiki/Netpbm_format">PGM</a>)
+                    do not contain NULL bytes. This method will also typically classify UTF-16 and UTF-32
+                    encoded text as "binary", as they encode common Latin-1 code points with NULL bytes:
+                </p>
+                <pre>
+▶ iconv -f UTF-8 -t UTF-16 message > message-utf16
+▶ hexyl --panels=1 message-utf16
+┌────────┬─────────────────────────┬────────┐
+│00000000│ ff fe 68 00 65 00 6c 00 │××h⋄e⋄l⋄│
+│00000008│ 6c 00 6f 00 20 00 3c d8 │l⋄o⋄ ⋄<×│
+│00000010│ 0d df 0a 00             │_×_⋄    │
+└────────┴─────────────────────────┴────────┘
+▶ grep . message-utf16
+Binary file message-utf16 matches
+</pre>
+                <p>
+                    Nevertheless, this heuristic approach is very useful. I have written a
+                    <a href="https://github.com/sharkdp/content_inspector">small library</a> in Rust
+                    which uses a slightly refined version of this method to quickly determine whether
+                    a given file contains "binary" or "text" data. It is used in my program
+                    <a href="https://github.com/sharkdp/bat">bat</a> to prevent "binary" files from
+                    being dumped to the terminal:
+                </p>
+                <p>
+                    <img src="bat-binary.png" alt="bat, detecting binary files" loading="lazy">
+                </p>
+            </section>
+
+            <section>
+                <h2>Footnotes</h2>
+                <p class="footnote">
+                    <sup>1</sup> Note that there are some encodings that write so-called
+                    <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order marks</a> (BOM)
+                    at the beginning of a file to indicate the type of encoding. For example, the
+                    little-endian variant of UTF-32 uses <code>ff fe 00 00</code>. These BOMs would
+                    help with the second point because we would not need to decode the <em>whole</em>
+                    content of the file. Unfortunately, adding BOMs is optional and a lot of encodings
+                    do not specify one.
+                </p>
+                <p class="footnote">
+                    <sup>2</sup> <code>50 4e 47</code> is part of the
+                    <a href="https://en.wikipedia.org/wiki/List_of_file_signatures">magic number</a>
+                    of the PNG format. Magic numbers are similar to BOMs and a lot of binary formats
+                    use magic numbers at the beginning of the file to signal their type. Using magic
+                    numbers to detect certain types of "binary" files is a method that is used by the
+                    <code>file</code> tool.
+                </p>
+            </section>
+
+        </div>
+    </div>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-39945208-2', 'david-peter.de');
+        ga('send', 'pageview');
+    </script>
+</body>
+
+</html>
