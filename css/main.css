@@ -2,11 +2,16 @@
 
 :root {
     /* Color scheme https://kuler.adobe.com/Salmon-on-Ice-color-theme-2291686/ */
-    --dk: #3E454C;  /* dark */
-    --hl: #2185C5;  /* highlight */
-    --hll: #7ECEFD; /* lighter highlight */
-    --lt: #FFF6E5;  /* light */
-    --ct: #FF7F66;  /* contrast */
+    --dk: #3E454C;
+    /* dark */
+    --hl: #2185C5;
+    /* highlight */
+    --hll: #7ECEFD;
+    /* lighter highlight */
+    --lt: #FFF6E5;
+    /* light */
+    --ct: #FF7F66;
+    /* contrast */
 
     /* Sizes */
     --content-width: 750px;
@@ -41,7 +46,8 @@
     padding: 0;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     width: 100%;
     margin: 0;
@@ -87,7 +93,8 @@ h2 {
         padding-bottom: 3pt;
     }
 
-    & a:hover, & a:focus {
+    & a:hover,
+    & a:focus {
         color: var(--hll);
     }
 }
@@ -110,11 +117,13 @@ p {
         padding-right: 2px;
     }
 
-    & a:hover, & a:focus {
+    & a:hover,
+    & a:focus {
         color: var(--hl);
     }
 
-    & a:hover::before, & a:focus::before {
+    & a:hover::before,
+    & a:focus::before {
         color: black;
     }
 
@@ -131,6 +140,10 @@ ul {
     font-size: var(--font-size);
 }
 
+code {
+    font-size: 0.9em;
+}
+
 /* Small devices: 750px + 2 * 100px = 950px */
 @media screen and (max-width: 950px) {
     :root {
@@ -141,7 +154,7 @@ ul {
         --par-sep: 25px;
     }
 
-    p > img {
+    p>img {
         display: none;
     }
 
