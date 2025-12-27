@@ -23,8 +23,8 @@
     --header-font: 'Lato', sans-serif;
 
     --font-size: 19px;
-    --font-size-h1: 50px;
-    --font-size-h2: 30px;
+    --font-size-h1: 40px;
+    --font-size-h2: 24px;
     --par-sep: 40px;
 
     --link-size-factor: 0.8;
@@ -147,8 +147,8 @@ code {
     :root {
         --margin-top: 25px;
         --font-size: 18px;
-        --font-size-h1: 40px;
-        --font-size-h2: 28px;
+        --font-size-h1: 32px;
+        --font-size-h2: 22px;
         --par-sep: 25px;
     }
 
