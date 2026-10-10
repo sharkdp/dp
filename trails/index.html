@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trails Stuttgart</title>
+	<meta charset="utf-8" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.3/dist/leaflet.css" />
+    <style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+    html, body, #map {
+        height: 100%;
+        width: 100%;
+    }
+    #tracks {
+        font-family: 'Roboto', sans-serif;
+        font-size: 12pt;
+        position: absolute;
+        bottom: 23px;
+        right: 10px;
+        z-index: 1;
+        width: 250px;
+        background-color: #eee;
+        border: 1pt solid black;
+        padding: 3px;
+    }
+    #tracks a {
+        color: #354CB5;
+        text-decoration: none;
+    }
+    </style>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div id="map"></div>
+
+    <div id="tracks">
+        <a href="javascript:showTrack('runde1', 'red');">Runde 1</a> (<a href="runde1.gpx">Download</a>)<br />
+        <a href="javascript:showTrack('runde2', 'yellow');">Runde 2</a> (<a href="runde2.gpx">Download</a>)<br />
+        <a href="javascript:showTrack('runde3', 'gray');">Runde 3</a> (<a href="runde3.gpx">Download</a>)<br />
+        <a href="javascript:showTrack('runde4', 'cyan');">Runde 4</a> (<a href="runde4.gpx">Download</a>)<br />
+        <a href="javascript:showTrack('runde5', 'blue');">Runde 5</a> (<a href="runde5.gpx">Download</a>)<br />
+        <a href="javascript:showTrack('runde-frauenkopf', 'magenta');">Runde Frauenkopf</a> (<a href="runde-frauenkopf.gpx">Download</a>)<br />
+        <a href="javascript:showTrack('runde-rucksackpfad', 'orange');">Rucksackpfad</a> (<a href="runde-rucksackpfad.gpx">Download</a>)<br />
+    </div>
+
+	<script src="https://unpkg.com/leaflet@0.7.3/dist/leaflet.js"></script>
+    <!-- <script src='http://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.1.2/leaflet-omnivore.min.js'></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script>
+        var oriLat = 48.74504;
+        var oriLon = 9.10337;
+		var map = L.map('map').setView([oriLat, oriLon], 13);
+
+		L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="https://mapbox.com">Mapbox</a>',
+			id: 'sharkdp.k8n662p7'
+		}).addTo(map);
+
+        var shown = {};
+        function showTrack(file, col) {
+            if (file in shown) {
+                map.removeLayer(shown[file]);
+                delete shown[file];
+            }
+            else {
+                $.getJSON(file + ".geojson").done(function (data) {
+                    var layer = L.geoJson(data, {
+                        style: {
+                            color: col,
+                            weight: 4,
+                            opacity: 0.8
+                        }
+                    });
+                    layer.addTo(map);
+                    shown[file] = layer;
+                });
+            }
+        }
+
+        $.getJSON("alle.geojson").done(function (data) {
+            L.geoJson(data, {
+                style: {
+                    color: '#000000',
+                    weight: 2,
+                    opacity: 1
+                }
+            }).addTo(map);
+        });
+
+        $.getJSON("potentielle.geojson").done(function (data) {
+            L.geoJson(data, {
+                style: {
+                    color: '#0000ff',
+                    weight: 2,
+                    opacity: 1
+                }
+            }).addTo(map);
+        });
+
+	</script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-56785903-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
