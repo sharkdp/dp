@@ -36,9 +36,9 @@ def parse_collection(data):
             "bggid": int(item.attrib["objectid"]),
             "name": name,
             "year": int(item.findtext("yearpublished") or 0),
-            "minplayers": int(stats.attrib["minplayers"]),
-            "maxplayers": int(stats.attrib["maxplayers"]),
-            "time": int(stats.attrib["playingtime"]),
+            "minplayers": int(stats.get("minplayers") or 0),
+            "maxplayers": int(stats.get("maxplayers") or 0),
+            "time": int(stats.get("playingtime") or 0),
             "thumb": item.findtext("thumbnail") or "",
             "rating": 0.0 if value == "N/A" else float(value),
         })
@@ -60,7 +60,7 @@ def fetch_collection(token):
         except urllib.error.HTTPError as error:
             if error.code not in (429, 500, 502, 503, 504):
                 raise
-        except urllib.error.URLError:
+        except (urllib.error.URLError, TimeoutError):
             pass
         if attempt < 4:
             time.sleep(15 * (attempt + 1))
