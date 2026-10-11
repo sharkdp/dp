@@ -13,7 +13,7 @@ var shortTitle = {
 };
 
 $(document).ready(function() {
-    $.getJSON("collection.php", function(res) {
+    $.getJSON("collection.json", function(res) {
         var container = $("#gamesContainer");
 
         if (!res) {

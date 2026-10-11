@@ -1,13 +1,23 @@
-# Board-game collection endpoint
+# Board-game collection
 
-`collection.php` reads two environment variables:
+The page loads `collection.json`, served directly by Caddy. A daily systemd
+job on pink runs `update-collection.py` to fetch the BoardGameGeek collection.
+The updater needs Python 3 and its standard library:
 
-- `BGG_CONFIG`: absolute path to a private PHP file defining `$token`, the
-  BoardGameGeek API token. Keep it outside the public document root and Git.
-- `BGG_CACHE`: absolute path to the writable JSON cache. Its parent directory
-  must be writable by the PHP service for atomic replacement.
+```sh
+python3 update-collection.py --token-file /path/to/bgg-token --output /path/to/collection.json
+```
 
-The cache refreshes on demand after 24 hours. If the upstream request fails,
-the previous cache is served; without a cache, the endpoint returns HTTP 503.
-The token must be restored separately after reinstalling; the cache can be
-regenerated. `config.php` and `collection.json` are ignored by Git.
+The token file contains only the private BGG API token. Keep it outside Git
+and the public document root. On pink, systemd loads it from
+`/var/lib/dp-collection/bgg-token` as a service credential. The output is
+`/var/lib/dp-collection/public/collection.json`.
+
+The updater retries queued requests and transient HTTP errors, validates the
+response, and atomically replaces the JSON. Failure preserves the last good
+file. A valid empty collection produces an empty array. The NixOS configuration
+in `pink-nixos/services/david-peter.nix` defines the service, timer and Caddy
+route. `/lists/collection.php` remains an alias for older page versions.
+
+The token must be restored separately after reinstalling; the JSON can be
+regenerated. Legacy `config.php` and `collection.json` files remain ignored by Git.
